@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="jars/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="jars/vecmath.jar" sourcepath="jars/src/vecmath-1_5_2-src.zip"/>
+	<classpathentry kind="lib" path="jars/jogl.all.jar" sourcepath="jars/src/jogl-java-src.zip"/>
+	<classpathentry kind="lib" path="jars/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="jars/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
