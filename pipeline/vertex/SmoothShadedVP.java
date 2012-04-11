@@ -1,11 +1,10 @@
 package pipeline.vertex;
 
-import java.awt.Point;
+
 import java.util.Vector;
 
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3f;
-import javax.vecmath.Point4f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
@@ -65,31 +64,36 @@ public class SmoothShadedVP extends VertexProcessor {
         // start with c scaled by Pipeline.ambientIntensity
         ct.scale(Pipeline.ambientIntensity);
 
+        Point3f p = new Point3f(output.v.x,output.v.y,output.v.z);
+    	Vector3f norm = new Vector3f(normal.x,normal.y,normal.z);
+    	// Vector from Vertex Position to Eye
+    	Vector3f toEye = new Vector3f(p);
+    	toEye.scale(-1);
+    	
+    	Vector3f lV = new Vector3f();
+    	Vector3f h = new Vector3f();
+
+        // for each light, add diffuse and specular term, using normal, light direction, and eye direction
         for(int i=0;i<Pipeline.lights.size();i++) {
         	PointLight l = Pipeline.lights.get(i);
-        	Vector3f p = new Vector3f(output.v.x,output.v.y,output.v.z);
-        	Vector3f lV = new Vector3f();
-        	Vector3f h = new Vector3f();
-        	Vector3f norm = new Vector3f(normal.x,normal.y,normal.z);
-        	Vector3f toEye = new Vector3f(p);
-        	toEye.scale(-1);
-	        // for each light, add diffuse and specular term, using normal, light direction, and eye direction
-	        // note that light positions are given in eye space, and the camera is at the origin
 	
-	        // diffuse term uses vertex color c and light color
-	        
 	        // specular term uses Pipeline.specularColor and assumes light color is full white
-	        // also uses Pipeline.specularExponent
-			// Calculate l and h
         	
+			// Calculate l and h
+	        // note that light positions are given in eye space, and the camera is at the origin
 			lV.sub(l.getPosition(),p);
 			lV.normalize();
 			h.add(toEye,lV);
 			h.normalize();
-			Color3f intensity  = l.getIntensity();
+			
+			// Pull Light Intensity
+			Color3f intensity = l.getIntensity();
+			// Perform Math Calculations before rather than trying to iterate through the Math library 8129418239 times.
 			double a = Math.max(0,lV.dot(norm));
+	        // also uses Pipeline.specularExponent
 			double b = Math.pow(Math.max(0, norm.dot(h)),Pipeline.specularExponent);
 			// Lambertian Component
+	        // diffuse term uses vertex color c and light color
 			ct.x += (c.x * intensity.x * a);
 			ct.y += (c.y * intensity.y * a);
 			ct.z += (c.z * intensity.z * a);
@@ -99,10 +103,10 @@ public class SmoothShadedVP extends VertexProcessor {
 			ct.z += (Pipeline.specularColor.z * intensity.z * b);
 			
         }
-    	ct.clamp(0,1);
         // in the end, clamp the resulting color to [0, 1] and store in attributes
+    	ct.clamp(0,1);
         output.setAttrs(nAttr());
-        output.attrs[0] = ct.x; // red for now
+        output.attrs[0] = ct.x;
         output.attrs[1] = ct.y;
         output.attrs[2] = ct.z;
         
