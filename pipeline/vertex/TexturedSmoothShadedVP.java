@@ -25,10 +25,13 @@ public class TexturedSmoothShadedVP extends SmoothShadedVP {
     public void vertex(Vector3f v, Color3f c, Vector3f n, Vector2f t, Vertex output) {
         // TODO 1
         
+    	super.vertex(v, c, n, t, output);
+    	
         // simply call super.vertex(...)
         // then store texture coords in the additional two attributes
         
-        output.setAttrs(nAttr()); // placeholder
+        output.attrs[3] = t.x;
+        output.attrs[4] = t.y;
     }
 
 }
