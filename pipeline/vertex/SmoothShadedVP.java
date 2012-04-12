@@ -41,7 +41,7 @@ public class SmoothShadedVP extends VertexProcessor {
      * @see VertexProcessor#updateTransforms(Pipeline)
      */
     public void updateTransforms(Pipeline pipe) {
-        // TODO 1
+        // TODO 1 (DONE)
         m.set(pipe.modelviewMatrix);
         projection.set(pipe.projectionMatrix);
         viewport.set(pipe.viewportMatrix);
@@ -51,7 +51,7 @@ public class SmoothShadedVP extends VertexProcessor {
      * @see VertexProcessor#vertex(Vector3f, Color3f, Vector3f, Vector2f, Vertex)
      */
     public void vertex(Vector3f v, Color3f c, Vector3f n, Vector2f t, Vertex output) {
-        // TODO 1
+        // TODO 1 (DONE)
     	Vector4f normal = new Vector4f(n.x,n.y,n.z,0);
         output.v.set(v.x, v.y, v.z, 1);
         // multiply v by modelview matrix, this gives vertex pos in "eye space"

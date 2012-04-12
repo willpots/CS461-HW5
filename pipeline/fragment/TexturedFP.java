@@ -23,21 +23,14 @@ public class TexturedFP extends FragmentProcessor {
      * @see FragmentProcessor#fragment(Fragment, FrameBuffer)
      */
     public void fragment(Fragment f, FrameBuffer fb) {
-        // TODO 1
-    	
+        // TODO 1 (DONE)
     	Color3f outColor = new Color3f();
     	Vector2f inCoords = new Vector2f(f.attrs[4], f.attrs[5]);
-    	
-        // similar to ColorZBuffer
-        // but also samples texture (use texture.sample(inCoords, outColor))
-        // and then multiplies surface color with texture color
-        // should also clamp to [0, 1]
-    	
+
     	texture.sample(inCoords, outColor);
 
     	outColor.clamp(0,1);
     	
     	fb.set(f.x, f.y, f.attrs[1]*outColor.x, f.attrs[2]*outColor.y, f.attrs[3]*outColor.z, f.attrs[0]);
-    		
     }
 }
