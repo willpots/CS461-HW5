@@ -14,23 +14,26 @@ import pipeline.misc.FrameBuffer;
  */
 public class TexturedFP extends FragmentProcessor {
 
-    // The number of fragment attributes expected from the vertex processor
-    public int nAttr() {
-        return 5;   // surface color (r,g,b), texture coordinates (u,v)
-    }
+	// The number of fragment attributes expected from the vertex processor
+	public int nAttr() {
+		return 5; // surface color (r,g,b), texture coordinates (u,v)
+	}
 
-    /**
-     * @see FragmentProcessor#fragment(Fragment, FrameBuffer)
-     */
-    public void fragment(Fragment f, FrameBuffer fb) {
-        // TODO 1 (DONE)
-    	Color3f outColor = new Color3f();
-    	Vector2f inCoords = new Vector2f(f.attrs[4], f.attrs[5]);
+	/**
+	 * @see FragmentProcessor#fragment(Fragment, FrameBuffer)
+	 */
+	public void fragment(Fragment f, FrameBuffer fb) {
+		// TODO 1 (DONE)
+		if (f.attrs[0] < fb.getZ(f.x, f.y)) {
+			Color3f outColor = new Color3f();
+			Vector2f inCoords = new Vector2f(f.attrs[4], f.attrs[5]);
 
-    	texture.sample(inCoords, outColor);
+			texture.sample(inCoords, outColor);
 
-    	outColor.clamp(0,1);
-    	
-    	fb.set(f.x, f.y, f.attrs[1]*outColor.x, f.attrs[2]*outColor.y, f.attrs[3]*outColor.z, f.attrs[0]);
-    }
+			outColor.clamp(0, 1);
+
+			fb.set(f.x, f.y, f.attrs[1] * outColor.x, f.attrs[2] * outColor.y,
+					f.attrs[3] * outColor.z, f.attrs[0]);
+		}
+	}
 }
