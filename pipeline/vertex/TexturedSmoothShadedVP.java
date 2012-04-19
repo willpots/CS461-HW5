@@ -23,7 +23,7 @@ public class TexturedSmoothShadedVP extends SmoothShadedVP {
      * @see VertexProcessor#vertex(Vector3f, Color3f, Vector3f, Vector2f, Vertex)
      */
     public void vertex(Vector3f v, Color3f c, Vector3f n, Vector2f t, Vertex output) {
-        // TODO 1
+        // TODO 1 (DONE)
         
     	super.vertex(v, c, n, t, output);
     	

@@ -7,6 +7,7 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
+import pipeline.Pipeline;
 import pipeline.PointLight;
 import pipeline.math.Matrix4f;
 import pipeline.misc.Vertex;
@@ -36,6 +37,15 @@ public class TexturedFragmentShadedVP extends FragmentShadedVP {
 		return 8; // normal (x,y,z), texture coordinates (u,v), fragment
 					// position (x,y,z)
 	}
+	/**
+	 * @see VertexProcessor#updateTransforms(Pipeline)
+	 */
+	public void updateTransforms(Pipeline pipe) {
+		// TODO 2 (DONE)
+		m.set(pipe.modelviewMatrix);
+		projection.set(pipe.projectionMatrix);
+		viewport.set(pipe.viewportMatrix);
+	}
 
 	/**
 	 * @see VertexProcessor#vertex(Vector3f, Color3f, Vector3f, Vector2f,
@@ -44,17 +54,13 @@ public class TexturedFragmentShadedVP extends FragmentShadedVP {
 	public void vertex(Vector3f v, Color3f c, Vector3f n, Vector2f t,
 			Vertex output) {
 		
-		// TODO 2
+		// TODO 2 (DONE)
 		Vector4f normal = new Vector4f(n.x, n.y, n.z, 0);
 		output.v.set(v.x, v.y, v.z, 1);
 		// multiply v by modelview matrix, this gives vertex pos in "eye space"
 		m.rightMultiply(output.v);
 		// do the same with the normal
 		m.rightMultiply(normal);
-
-		// compute color at vertex:
-		Color3f ct = new Color3f(c);
-		// start with c scaled by Pipeline.ambientIntensity
 
 		output.setAttrs(nAttr());
 		output.attrs[0] = normal.x;
