@@ -72,16 +72,20 @@ public class FragmentShadedVP extends VertexProcessor {
 		output.attrs[0] = ct.x;
 		output.attrs[1] = ct.y;
 		output.attrs[2] = ct.z;
+		
 		output.attrs[3] = normal.x;
 		output.attrs[4] = normal.y;
 		output.attrs[5] = normal.z;
 
 		// also project vertex position to screen space
-		projection.rightMultiply(output.v);
-		viewport.rightMultiply(output.v);
+
+		
 		output.attrs[6] = output.v.x;
 		output.attrs[7] = output.v.y;
 		output.attrs[8] = output.v.z;
+		
+		projection.rightMultiply(output.v);
+		viewport.rightMultiply(output.v);
 
 	}
 

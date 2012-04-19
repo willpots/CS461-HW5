@@ -27,18 +27,20 @@ public class PhongShadedFP extends FragmentProcessor {
      * @see FragmentProcessor#fragment(Fragment, FrameBuffer)
      */
     public void fragment(Fragment f, FrameBuffer fb) {
-		Color3f inColor = new Color3f(f.attrs[0],f.attrs[1],f.attrs[2]);
-		Color3f outColor = new Color3f(0,0,0);
+		Color3f inColor = new Color3f(f.attrs[1],f.attrs[2],f.attrs[3]);
+		Color3f outColor = new Color3f(f.attrs[1],f.attrs[2],f.attrs[3]);
 		Vector3f lV = new Vector3f();
 		Vector3f h = new Vector3f();
-
-		inColor.scale(Pipeline.ambientIntensity);
-		Vector3f norm = new Vector3f(f.attrs[3],f.attrs[4],f.attrs[5]);
+		
+		outColor.scale(Pipeline.ambientIntensity);
+		
+		Vector3f norm = new Vector3f(f.attrs[4],f.attrs[5],f.attrs[6]);
 		norm.normalize();
 
-		Point3f position = new Point3f(f.attrs[6],f.attrs[7],f.attrs[8]);
+		Point3f position = new Point3f(f.attrs[7],f.attrs[8],f.attrs[9]);
 		Vector3f toEye = new Vector3f(position);
 		toEye.scale(-1);
+		toEye.normalize();
 
 		for (int i = 0; i < Pipeline.lights.size(); i++) {
 			PointLight l = Pipeline.lights.get(i);
@@ -61,15 +63,16 @@ public class PhongShadedFP extends FragmentProcessor {
 			outColor.x += (inColor.x * intensity.x * a);
 			outColor.y += (inColor.y * intensity.y * a);
 			outColor.z += (inColor.z * intensity.z * a);
+			
 			// Phong Component
-			outColor.x += (Pipeline.specularColor.x * intensity.x * b);
-			outColor.y += (Pipeline.specularColor.y * intensity.y * b);
-			outColor.z += (Pipeline.specularColor.z * intensity.z * b);
+			outColor.x += (Pipeline.specularColor.x * b);
+			outColor.y += (Pipeline.specularColor.y * b);
+			outColor.z += (Pipeline.specularColor.z * b);
 
 		}
 		outColor.clamp(0, 1);
-		if (f.attrs[2] < fb.getZ(f.x, f.y)) {
-			fb.set(f.x, f.y, outColor.x, outColor.y, outColor.z, f.attrs[2]);
-		}
+		
+		if (f.attrs[0] < fb.getZ(f.x, f.y))
+			fb.set(f.x, f.y, outColor.x, outColor.y, outColor.z, f.attrs[0]);
 	}
 }
